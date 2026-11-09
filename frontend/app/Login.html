@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+        <title>Login</title>
+        <link rel="stylesheet" href="Login_css.css">
+      </head>    
+    <body>
+        <div id="title_logo">
+            <h3>STREAMIFY</h3>
+        </div>
+        <div id="themeToggle" class="theme-toggle">
+        <img id="themeIcon" src="Web_Images/night-mode.png" alt="Toggle theme">
+    </div>
+        <div class="sign_in">
+          <h1>Sign in</h1>
+          <form id= "loginForm" class="form-group">
+            <div>
+            <label for="email">EMAIL</label>
+            
+            <input type="email" id="email" name="email">
+            </div>
+
+            <div><label for="password">PASSWORD</label></div>
+            
+            <div class="password-container">               
+            <input type="password" id="password" name="password">
+
+            <button type="button" id="togglePassword">
+            <img  id="eyeIcon" src="Web_Images/show.png" alt="Show Password">
+            </button>  
+            </div>            
+           <div>
+            <input type="submit" value="Sign in">
+           </div>
+           <div>
+            <p>Don't have an account? <a href="Plans.html">Sign Up</a></p>
+           </div>
+           
+
+          </form>
+          
+
+        </div>
+        <div id="toast"></div>
+     <script src="Login_script.js"></script>
+     <script src="theme.js"></script>
+    </body>
+</html>

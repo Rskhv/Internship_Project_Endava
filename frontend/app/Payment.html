@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Payment</title>
+    <link rel="stylesheet" href="Payment_css.css">
+</head>
+
+<body>
+
+    <div id="title_logo">
+        <h3>STREAMIFY</h3>
+    </div>
+
+    <form id="paymentForm" class="form-group">
+
+        <h1>Complete Payment</h1>
+
+        <div class="subscription-card">
+
+            <h2 id="planName">Loading...</h2>
+
+            <div class="detail">
+                <span>Price</span>
+                <span id="planPrice"></span>
+            </div>
+
+            <div class="detail">
+                <span>Resolution</span>
+                <span id="planResolution"></span>
+            </div>
+
+            <div class="detail">
+                <span>Screens</span>
+                <span id="planScreens"></span>
+            </div>
+
+        </div>
+
+        <label>Payment Method</label>
+
+        <select id="paymentMethod">
+
+            <option value="Credit Card">Credit Card</option>
+            <option value="Debit Card">Debit Card</option>
+            <option value="UPI">UPI</option>
+
+        </select>
+
+        <button type="submit">
+            Pay Now
+        </button>
+
+    </form>
+
+<script src="Payment_script.js"></script>
+<script src="theme.js"></script>
+
+</body>
+</html>

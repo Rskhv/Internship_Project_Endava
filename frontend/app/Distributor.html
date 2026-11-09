@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Distributor</title>
+<link rel="stylesheet" href="Distributor_css.css">
+</head>
+<body>
+
+    <div id="title_logo">
+        <h3>STREAMIFY</h3>
+    </div>
+
+    <div id="themeToggle" class="theme-toggle">
+        <img id="themeIcon" src="Web_Images/night-mode.png" alt="Toggle theme">
+    </div>
+
+    <form id="distributorForm" class="form-group">
+
+        <h1>Add Content</h1>
+
+        <div>
+            <label for="title">TITLE</label>
+            <input type="text" id="title" name="title" required>
+        </div>
+
+        <div>
+            <label for="type">TYPE</label>
+            <select id="type" name="type" required>
+                <option value="">Select Type</option>
+                <option value="Movie">Movie</option>
+                <option value="TV Show">TV Show</option>
+            </select>
+        </div>
+
+        <div>
+            <label for="release_year">RELEASE YEAR</label>
+            <input type="number" id="release_year" name="release_year" min="1900" max="2100" required>
+        </div>
+
+        <div>
+            <label for="description">DESCRIPTION</label>
+            <textarea id="description" name="description" rows="4" maxlength="1000" required></textarea>
+        </div>
+
+        <div>
+            <label for="actors">ACTORS <span class="hint">(comma separated)</span></label>
+            <input type="text" id="actors" name="actors" placeholder="e.g. Tom Hardy, Anne Hathaway">
+        </div>
+
+        <div>
+            <label for="directors">DIRECTORS <span class="hint">(comma separated)</span></label>
+            <input type="text" id="directors" name="directors" placeholder="e.g. Christopher Nolan">
+        </div>
+
+        <div>
+            <label for="genres">GENRES <span class="hint">(comma separated)</span></label>
+            <input type="text" id="genres" name="genres" placeholder="e.g. Action, Sci-Fi">
+        </div>
+
+        <button type="submit">
+            Add To Catalog
+        </button>
+
+    </form>
+
+   
+    <div class="preview-card" id="previewCard" style="display:none;">
+
+        <img id="previewPoster" src="" alt="">
+
+        <div class="preview-info">
+            <h3 id="previewTitle"></h3>
+            <p id="previewMeta"></p>
+        </div>
+
+    </div>
+
+    <div id="toast"></div>
+
+<script src="Distributor_script.js"></script>
+<script src="theme.js"></script>
+</body>
+</html>

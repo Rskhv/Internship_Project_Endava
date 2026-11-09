@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Streamify</title>
+
+<link rel="stylesheet" href="home_css.css">
+</head>
+
+<body>
+
+<header>
+
+    <div class="nav-left">
+
+        <div class="logo">STREAMIFY</div>
+
+        <nav>
+            <a href="#" onclick="showHome()">Home</a>
+            <a href="#" onclick="showTVPage()">TV Shows</a>
+            <a href="#" onclick="showMoviesPage()">Movies</a>
+        </nav>
+
+    </div>
+
+    <div class="nav-right">
+       <div id="themeToggle" class="theme-toggle">
+        <img id="themeIcon" src="Web_Images/night-mode.png" alt="Toggle theme">
+    </div>
+
+        <div class="search-container">
+
+            <img src="Web_Images/search.png" alt="Search" class="search-icon">
+
+            <input
+                type="text"
+                id="searchBox"
+                placeholder="Search movies or TV shows">
+
+        </div>
+
+        <div class="profile-menu">
+
+            <div class="profile" id="profileIcon">
+                P
+            </div>
+
+            <div class="dropdown" id="profileDropdown"></div>
+
+        </div>
+
+    </div>
+
+</header>
+
+<section class="hero" id="heroSection">
+
+    <div class="hero-content">
+
+        <div class="tags" id="heroGenres"></div>
+
+        <h1 id="heroTitle"></h1>
+
+        <p id="heroDescription"></p>
+
+        <div class="buttons">
+            <button class="play-btn" onclick="heroPlay()">▶ Play Now</button>
+            <button class="info-btn" onclick="heroInfo()">ⓘ More Info</button>
+        </div>
+
+        <div class="details" id="heroDetails"></div>
+
+    </div>
+
+</section>
+
+<section class="content">
+
+    <h2 id="searchHeading" style="display:none;">Search Results</h2>
+    <div class="movie-row grid-row" id="searchRow" style="display:none;"></div>
+
+    <div id="moviesPage" class="browse-page" style="display:none;">
+
+        <div class="browse-header">
+
+            <h2>Movies</h2>
+
+            <div class="genre-filter">
+                <label for="movieGenreSelect">Genre</label>
+                <select id="movieGenreSelect">
+                    <option value="">All Genres</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div class="grid-row" id="moviesGrid"></div>
+
+    </div>
+
+    <div id="tvPage" class="browse-page" style="display:none;">
+
+        <div class="browse-header">
+
+            <h2>TV Shows</h2>
+
+            <div class="genre-filter">
+                <label for="tvGenreSelect">Genre</label>
+                <select id="tvGenreSelect">
+                    <option value="">All Genres</option>
+                </select>
+            </div>
+
+        </div>
+
+        <div class="grid-row" id="tvGrid"></div>
+
+    </div>
+
+    <div id="defaultContent">
+
+        <h2>Continue Watching</h2>
+        <div class="movie-row" id="continueRow"></div>
+
+        <h2>Trending Now</h2>
+        <div class="movie-row" id="trendingRow"></div>
+
+        <h2>Movies</h2>
+        <div class="movie-row" id="moviesRow"></div>
+
+        <h2>TV Shows</h2>
+        <div class="movie-row" id="tvRow"></div>
+
+    </div>
+
+</section>
+
+<!-- More Info modal (Netflix-style small popup) -->
+<div class="modal-overlay" id="infoModal" style="display:none;">
+
+    <div class="modal">
+
+        <button class="modal-close" onclick="closeInfoModal()">&times;</button>
+
+        <div class="modal-banner">
+
+            <img id="modalImage" src="" alt="">
+
+            <div class="modal-banner-buttons">
+                <button class="play-btn" id="modalPlayBtn">▶ Play</button>
+            </div>
+
+        </div>
+
+        <div class="modal-body">
+
+            <h2 id="modalTitle"></h2>
+            <div class="modal-meta" id="modalMeta"></div>
+
+            <p id="modalDescription"></p>
+
+            <div class="modal-cast">
+                <p><strong>Genres:</strong> <span id="modalGenres"></span></p>
+                <p><strong>Director:</strong> <span id="modalDirectors"></span></p>
+                <p><strong>Cast:</strong> <span id="modalCast"></span></p>
+            </div>
+
+        </div>
+
+    </div>
+
+</div>
+
+<!-- Simulated playback screen with a progress bar driven by watch history -->
+<div class="player-page" id="playerPage" style="display:none;">
+
+    <button class="player-back" onclick="closePlayer()">← Back</button>
+
+    <div class="player-screen">
+
+        <div class="player-title" id="playerTitle"></div>
+
+        <div class="player-progress-bar">
+            <div class="player-progress-fill" id="playerProgressFill"></div>
+        </div>
+
+        <div class="player-controls">
+            <button id="playerPauseBtn" onclick="togglePlayback()">⏸ Pause</button>
+            <span id="playerPercent">0%</span>
+        </div>
+
+    </div>
+
+</div>
+
+<script src="home_script.js"></script>
+<script src="theme.js"></script>
+
+</body>
+</html>

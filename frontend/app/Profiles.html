@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<head>
+    <title>Profiles</title>
+    <link rel="stylesheet" href="Profiles_css.css">
+</head>
+
+<body>
+
+    <div id="title_logo">
+        <h3>STREAMIFY</h3>
+    </div>
+
+    <div class="profiles">
+
+        <h2>Continue Watching For</h2>
+
+        <div class="profile-grid" id="profileGrid">
+
+           
+        </div>
+
+    </div>
+    <div id="addProfileModal" class="modal">
+
+    <div class="modal-content">
+
+        <h2>Add Profile</h2>
+
+        <input
+            type="text"
+            id="profileName"
+            placeholder="Profile Name">
+
+        <select id="profileLanguage">
+            <option>English</option>
+            <option>Hindi</option>
+            <option>Kannada</option>
+            <option>Tamil</option>
+        </select>
+
+        <select id="profileAge">
+            <option>Adult</option>
+            <option>Teen</option>
+            <option>Kids</option>
+        </select>
+        <div class ="modalButtons">
+        <button onclick="addProfile()">Continue</button>
+        <button onclick="closeModal()">Cancel</button>
+        </div>
+
+    </div>
+
+</div>
+<div id="toast"></div>
+<script src="Profiles_script.js"></script>
+<script src="theme.js"></script>
+</body>
+</html>
