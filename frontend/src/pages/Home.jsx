@@ -1,0 +1,24 @@
+import {useCallback,useEffect,useMemo,useState} from 'react';
+import {Link} from 'react-router-dom';
+import {api} from '../services/api';
+import {Navbar,Carousel,Modal,GenreSelector,Loading,Empty,Alert,FooterNote,Button} from '../components/Ui';
+
+export default function HomePage(){
+ const profileId=localStorage.getItem('streamify.profile');const [items,setItems]=useState([]);const [continueList,setContinueList]=useState([]);const [genres,setGenres]=useState([]);const [featured,setFeatured]=useState(null);const [selected,setSelected]=useState(null);const [filter,setFilter]=useState({search:'',type:'',genre:''});const [draft,setDraft]=useState('');const [busy,setBusy]=useState(true);const [loadingMore,setLoadingMore]=useState(false);const [page,setPage]=useState(1);const [hasMore,setHasMore]=useState(false);const [error,setError]=useState('');
+ useEffect(()=>{if(!profileId)return;let canceled=false;setBusy(true);setError('');Promise.all([api.catalog({page:1,limit:40,search:filter.search,type:filter.type,genre:filter.genre}),api.continueWatching(profileId),api.genres(),api.featured()]).then(([catalog,continueData,genreData,feature])=>{if(canceled)return;setItems(catalog.data);setPage(1);setHasMore(catalog.data.length===40);setContinueList(continueData);setGenres(genreData);setFeatured(feature);}).catch(e=>{if(!canceled)setError(e.message);}).finally(()=>{if(!canceled)setBusy(false);});return()=>{canceled=true;};},[profileId,filter]);
+ useEffect(()=>{if(!profileId)return;const id=setTimeout(()=>setFilter((v)=>({...v,search:draft.trim()})),300);return()=>clearTimeout(id);},[draft,profileId]);
+ const movies=useMemo(()=>items.filter(x=>x.content_type==='movie'),[items]);const shows=useMemo(()=>items.filter(x=>x.content_type==='tv_show'),[items]);
+ const openDetails=useCallback(async(item)=>{try{setSelected(await api.content(item.id));}catch(e){setError(e.message);}},[]);
+ async function loadMore(){setLoadingMore(true);setError('');try{const next=page+1;const result=await api.catalog({page:next,limit:40,search:filter.search,type:filter.type,genre:filter.genre});setItems(current=>[...current,...result.data]);setPage(next);setHasMore(result.data.length===40);}catch(e){setError(e.message);}finally{setLoadingMore(false);}}
+ if(!profileId)return <main className="center-state"><h1>Choose a profile first</h1><Link className="button primary" to="/profiles">Choose profile</Link></main>;
+ return <><Navbar/><main className="home-page"><div className="hero-banner" style={{'--posterHue':`${(Number(featured?.id||1)*47)%360}deg`}}><div className="hero-copy"><p className="eyebrow">STREAMIFY ORIGINAL · FEATURED</p><h1>{featured?.title||'Your next favorite starts here.'}</h1><p>{featured?.description||'Discover a world of stories, made for your next night in.'}</p><div className="hero-actions"><Link className="button primary" to={featured?`/watch/${featured.id}`:'/home'}>▶ Play demo</Link><Button kind="ghost" onClick={()=>featured&&openDetails(featured)}>ⓘ More info</Button></div><span className="hero-label">SIMULATED PLAYBACK · NO VIDEO STREAM</span></div><div className="hero-shape" aria-hidden="true">S<span>V2</span></div></div>
+ <div className="browse-toolbar"><div><h2>Browse the catalog</h2><p className="muted">Explore titles and simulated stories.</p></div><div className="filter-controls"><input className="search-input" value={draft} onChange={e=>setDraft(e.target.value)} placeholder="Search titles…" aria-label="Search catalog"/><select className="select" value={filter.type} onChange={e=>setFilter({...filter,type:e.target.value})}><option value="">All titles</option><option value="movie">Movies</option><option value="tv_show">TV shows</option></select><GenreSelector genres={genres} value={filter.genre} onChange={genre=>setFilter({...filter,genre})}/></div></div>
+ <Alert>{error}</Alert>
+ {busy?<Loading label="Finding something good…"/>:items.length===0?<Empty title="No titles match that search">Try another title or clear the genre filter.</Empty>:(<div className="catalog-results">
+   {continueList.length>0&&<Carousel title="Continue Watching" items={continueList.map(x=>({...x,id:x.content_id,genres:[],description:`${Math.round(x.progress_percentage)}% watched`}))} onDetails={openDetails}/>}
+   {movies.length>0&&(!filter.type||filter.type==='movie')&&<Carousel title={filter.search?'Movie results':'Movies'} items={movies} onDetails={openDetails}/>}
+   {shows.length>0&&(!filter.type||filter.type==='tv_show')&&<Carousel title={filter.search?'Series results':'TV Shows'} items={shows} onDetails={openDetails}/>}
+   <div className="load-more-wrap">{hasMore&&<button className="button ghost" disabled={loadingMore} onClick={loadMore}>{loadingMore?'Loading…':'Load more titles'}</button>}</div>
+ </div>)}
+ </main><FooterNote/><Modal item={selected} onClose={()=>setSelected(null)}/></>;
+}

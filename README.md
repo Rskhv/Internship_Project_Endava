@@ -1,27 +1,48 @@
-# Streamify
+# Streamify V2
 
-A Netflix-inspired streaming service prototype with a static web frontend, an Express API backed by MySQL, and a notebook for preparing catalog data.
+A local-first, Netflix-inspired **streaming-service simulation** built with React, Vite, Express, and PostgreSQL. Playback advances a timer and progress bar only. The app does not upload, store, host, or stream video. Checkout is a labeled demo and never charges money.
 
-## Project layout
+## Prerequisites
 
-- `frontend/app/` — HTML, CSS, browser JavaScript, and image assets.
-- `backend/server.js` — Express API and static frontend server.
-- `database/netflix_schema.sql` — database tables, sample SQL, and example queries/triggers.
-- `database/Sql_Queries.java` — Java JDBC login example.
-- `notebooks/Netflix_dataStream.ipynb` — catalog data preparation workflow.
-- `data/raw/` — source catalog CSV (ignored by Git).
-- `data/processed/` — generated table CSVs (ignored by Git).
-- `archive/` — original ZIP archives retained for reference (ignored by Git).
+- Node.js 20.19+ (or 22.12+) and npm.
+- PostgreSQL 15+ running locally or a PostgreSQL-compatible hosted database.
 
-## Run the web app
+## Quick start
 
-1. Install Node dependencies with `npm install`.
-2. Create and populate the `netflix_db` MySQL database using `database/netflix_schema.sql` and configure the database connection in `backend/server.js` for your local MySQL instance.
-3. Start the server from the project root with `npm start`.
-4. Open `http://localhost:3000`.
+```powershell
+npm install
+Copy-Item .env.example .env
+```
 
-The database connection currently uses local development settings in `backend/server.js`; update them for your environment before running the app.
+Edit `.env` with a unique local database password, a URL containing the same password, and a randomly generated session secret. For Docker Desktop, start the included local-only PostgreSQL service with `docker compose up -d db`. Without Docker, create a PostgreSQL user/database that match your `.env`. Then:
 
-## Data workflow
+```powershell
+npm run db:migrate
+npm run db:seed
+npm run dev
+```
 
-Open `notebooks/Netflix_dataStream.ipynb` from the project root. It reads `data/raw/netflix_titles.csv` and writes generated tables to `data/processed/`. These CSV datasets and generated table files are excluded from Git to avoid committing bulk data. Keep source code, SQL schema, and notebooks tracked.
+Open the Vite URL shown in the terminal (normally `http://localhost:5173`). The API runs on port 3000. If `data/raw/netflix_titles.csv` exists locally, the seed command imports its **metadata**. Otherwise it inserts three fictional demo titles. No video content is imported.
+
+To create the first administrator, set `ADMIN_EMAIL` and a unique `ADMIN_PASSWORD` (at least 12 characters) in `.env` before `npm run db:seed`. Do not use a password you use elsewhere. The seed creates or updates that administrator account.
+
+## Useful commands
+
+```powershell
+npm run dev          # Vite and Express together
+npm run dev:web      # Frontend only
+npm run dev:api      # API only
+npm run db:migrate   # Apply the PostgreSQL schema
+npm run db:seed      # Seed plans and import the catalog
+npm run build        # Production frontend build
+npm start            # Express API (serves frontend/dist in production)
+npm test             # Automated tests
+```
+
+For production, set `NODE_ENV=production`, `DATABASE_URL`, `SESSION_SECRET`, and `CLIENT_ORIGIN` to secure deployment values, then run the migration, seed, frontend build, and `npm start`. HTTPS is required for secure production cookies.
+
+See [SETUP](docs/SETUP.md), [Architecture](docs/ARCHITECTURE.md), [Database design](docs/DATABASE_DESIGN.md), [API](docs/API.md), and [Security](docs/SECURITY.md).
+
+## Repository notes
+
+The previous static prototype, MySQL SQL, CSV source, and notebook are retained as references. The legacy MySQL credential in the prior implementation must be rotated if it was ever valid; it is intentionally not repeated here. The `.env` file is ignored by Git. Only synthetic playback and fake checkout are provided.
